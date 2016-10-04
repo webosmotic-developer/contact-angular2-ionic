@@ -1,0 +1,17 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title><ion-icon name="contacts"></ion-icon> Contact</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <button ion-item *ngFor="let contact of contactList" (click)="goTo($event, contact)">
+            <h2>{{contact.name}}</h2>
+
+            <p>{{contact.email}}</p>
+
+            <p>{{contact.phone}}</p>
+        </button>
+    </ion-list>
+</ion-content>
