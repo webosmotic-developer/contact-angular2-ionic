@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { ContactPage } from "../contact/contact";
 import { Contact } from "../../shared/contact/contact";
@@ -16,7 +16,7 @@ export class ContactDetailsPage{
 
     contact:Contact;
 
-    constructor(public nav:NavController, public params:NavParams, private contactService:ContactService) {
+    constructor(public nav:NavController, public params:NavParams, public alert: AlertController, private contactService:ContactService) {
         this.contact = this.params.get('contact') ? this.params.get('contact') : new Contact();
     }
 
@@ -39,11 +39,24 @@ export class ContactDetailsPage{
     }
 
     deleteContact(id:string){
-        let result = confirm("Are you sure you want delete this contact?");
-        if (result) {
-            this.contactService.delete(id);
-            this.nav.push(ContactPage);
-        }
+        let confirm = this.alert.create({
+            title: 'Delete',
+            message: 'Are you sure you want delete this contact?',
+            buttons: [
+                {
+                    text: 'Cancel',
+                    handler: () => {}
+                },
+                {
+                    text: 'Delete',
+                    handler: () => {
+                        this.contactService.delete(id);
+                        this.nav.push(ContactPage);
+                    }
+                }
+            ]
+        });
+        confirm.present();
     }
 
 }
