@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 
 import { ContactPage } from "../contact/contact";
 import { Contact } from "../../shared/contact/contact";
@@ -14,11 +14,20 @@ import { ContactService } from "../../shared/contact/contact.service";
 
 export class ContactDetailsPage{
 
+    loader;
     contact:Contact;
 
-    constructor(public nav:NavController, public params:NavParams, public toast: ToastController,
+    constructor(public nav:NavController, public params:NavParams, public loading: LoadingController,
                 public alert: AlertController, private contactService:ContactService) {
         this.contact = this.params.get('contact') ? this.params.get('contact') : new Contact();
+    }
+
+    fnLoading() {
+        this.loader = this.loading.create({
+            content: "Please wait...",
+            duration: 1000 * 60 * 60
+        });
+        this.loader.present();
     }
 
     fnValidateEmail(email:string) {
@@ -43,19 +52,24 @@ export class ContactDetailsPage{
         } else if (this.contact.phone && !this.fnValidatePhone(this.contact.phone)) {
             alert("Enter valid 10 digits number.");
         } else {
+            this.fnLoading();
             if (!this.contact._id) {
                 this.contactService.fnAddContact(this.contact)
                     .subscribe(() => {
-                        this.fnToast('Contact created.');
                         this.contact = new Contact();
+                        this.loader.dismissAll();
                         this.nav.push(ContactPage);
+                    },() => {
+                        this.loader.dismissAll();
                     });
             } else {
                 this.contactService.fnUpdateContact(this.contact)
                     .subscribe(() => {
-                        this.fnToast('Contact updated.');
                         this.contact = new Contact();
+                        this.loader.dismissAll();
                         this.nav.push(ContactPage);
+                    },() => {
+                        this.loader.dismissAll();
                     });
             }
         }
@@ -73,24 +87,16 @@ export class ContactDetailsPage{
                 {
                     text: 'Delete',
                     handler: () => {
+                        this.fnLoading();
                         this.contactService.fnDeleteContact(id)
-                            .subscribe(data => this.nav.push(ContactPage),
-                            error => this.nav.push(ContactPage));
+                            .subscribe(data => {this.loader.dismissAll();this.nav.push(ContactPage);},
+                            error => {this.loader.dismissAll();this.nav.push(ContactPage);});
 
                     }
                 }
             ]
         });
         confirm.present();
-    }
-
-    fnToast(msg:string){
-        let toast = this.toast.create({
-            message: msg,
-            duration: 2000,
-            position: 'middle'
-        });
-        toast.present();
     }
 
 }

@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-list>
+    <ion-list *ngIf="isContactsLoaded">
         <button ion-item *ngFor="let contact of contactList" (click)="fnGoTo($event, contact)">
             <h2>{{contact.name}}</h2>
 
