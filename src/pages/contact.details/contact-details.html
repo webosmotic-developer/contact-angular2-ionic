@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar color="primary">
         <ion-title><ion-icon name="person-add"></ion-icon> {{contact._id ? 'Edit' : 'Add'}} Contact</ion-title>
     </ion-navbar>
 </ion-header>
@@ -15,10 +15,10 @@
         </ion-item>
 
         <ion-item>
-            <ion-input type="text" placeholder="Phone" [(ngModel)]="contact.phone"></ion-input>
+            <ion-input type="number" placeholder="Phone" [(ngModel)]="contact.phone"></ion-input>
         </ion-item>
 
-        <button ion-button full (click)="saveContact()">Save</button>
-        <button ion-button full (click)="deleteContact(contact._id)" color="danger" *ngIf="contact._id">Delete</button>
+        <button ion-button full (click)="fnSaveContact()">Save</button>
+        <button ion-button full (click)="fnDeleteContact(contact._id)" color="danger" *ngIf="contact._id">Delete</button>
     </ion-list>
 </ion-content>

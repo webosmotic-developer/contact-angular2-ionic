@@ -12,7 +12,7 @@ import { ContactService } from "../../shared/contact/contact.service";
     providers: [ContactService]
 })
 
-export class ContactPage implements OnInit{
+export class ContactPage implements OnInit {
 
     contact:Contact;
     contactList:Array<Contact> = [];
@@ -23,13 +23,15 @@ export class ContactPage implements OnInit{
     }
 
     ngOnInit() {
-        var data = this.contactService.load();
-        data.forEach((obj) => {
-            this.contactList.unshift(obj);
-        });
+        this.contactService.fnGetUserContacts()
+            .subscribe(data => {
+                data.forEach((obj) => {
+                    this.contactList.unshift(obj);
+                });
+            });
     }
 
-    goTo(event, contact) {
+    fnGoTo(event, contact) {
         this.nav.push(ContactDetailsPage, {
             contact: contact
         });

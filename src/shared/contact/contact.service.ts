@@ -1,108 +1,72 @@
 import { Injectable } from "@angular/core";
-import { Contact } from "./contact";
+import { Http, Headers, Response } from '@angular/http';
 
-let contacts = [{
-    "_id": "57ecf79374384f1100889d0c",
-    "name": "John Doe",
-    "email": "john@example.com",
-    "phone": "9898456514"
-}, {
-    "_id": "6d482059-b166-b97d-8d48-3a2f4fcd6cba",
-    "name": "Mary Moe",
-    "email": "mary@example.com",
-    "phone": "9898451114"
-}, {
-    "_id": "0e60c9d6-8376-2474-579e-61e9ab482900",
-    "name": "July Dooley",
-    "email": "july@example.com",
-    "phone": "9898451224"
-}, {
-    "_id": "57f3b0a630d241f7b18759e2",
-    "picture": "http://placehold.it/32x32",
-    "name": "Coleen Flowers",
-    "email": "coleenflowers@quarmony.com",
-    "phone": "9898451224"
-}, {
-    "_id": "57f3b0a637deeddfe24a2789",
-    "picture": "http://placehold.it/32x32",
-    "name": "Francine Mccarthy",
-    "email": "francinemccarthy@quarmony.com",
-    "phone": "9898451224"
-}, {
-    "_id": "57f3b0a6628391a5cd23b3ff",
-    "picture": "http://placehold.it/32x32",
-    "name": "Guadalupe Randall",
-    "email": "guadaluperandall@quarmony.com",
-    "phone": "98986463424"
-}, {
-    "_id": "57f3b0a6d5f6453002fe0d66",
-    "picture": "http://placehold.it/32x32",
-    "name": "Frost Henderson",
-    "email": "frosthenderson@quarmony.com",
-    "phone": "98878751224"
-}, {
-    "_id": "57f3b0a6c7bde121c26673a5",
-    "picture": "http://placehold.it/32x32",
-    "name": "Jarvis Perkins",
-    "email": "jarvisperkins@quarmony.com",
-    "phone": "98984518888"
-}, {
-    "_id": "57f3b0a695b6ecd7d583291a",
-    "picture": "http://placehold.it/32x32",
-    "name": "Bridges Webster",
-    "email": "bridgeswebster@quarmony.com",
-    "phone": "989844326724"
-}, {
-    "_id": "57f3b0a6e1776b3b97c7f8a9",
-    "picture": "http://placehold.it/32x32",
-    "name": "Blackwell Ramirez",
-    "email": "blackwellramirez@quarmony.com",
-    "phone": "989845544646"
-}];
+import { Config } from "../config";
+import { Contact } from "./contact";
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ContactService {
-    constructor() {
+    constructor(private http:Http) {}
+
+    fnGetUserContacts():Observable<Contact[]> {
+        return this.http.get(Config.apiUrl + "/api/users/" + Config.user._id + "/contacts")
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    guid() {
-        let s4 = Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-        return s4 + s4 + '-' + s4 + '-' + s4 + '-' + s4 + '-' + s4 + s4 + s4;
+    fnGetContact(id:string):Observable<any> {
+        return this.http.get(Config.apiUrl + "/api/contacts/" + id)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    load() {
-        return contacts;
+    fnAddContact(contact:Contact):Observable<any> {
+
+        let headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
+        return this.http.post(Config.apiUrl + "/api/contacts", {
+            name: contact.name,
+            email: contact.email,
+            phone: contact.phone,
+            userId: Config.user._id
+        }, {headers: headers})
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    get(id:string) {
-        var index = contacts.map(function (obj) {
-            return obj._id;
-        }).indexOf(id);
-        if (index > -1) {
-            return contacts[index];
-        }
+    fnUpdateContact(contact:Contact):Observable<any> {
+
+        let headers = new Headers();
+        headers.append("Content-Type", "application/json");
+
+        return this.http.put(Config.apiUrl + "/api/contacts/" + contact._id, {
+            name: contact.name,
+            email: contact.email,
+            phone: contact.phone
+        }, {headers: headers})
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    add(contact:Contact) {
-        contact._id = this.guid();
-        contacts.push(contact);
+    fnDeleteContact(id:string):Observable<any> {
+        return this.http.delete(Config.apiUrl + "/api/contacts/" + id)
+            .map(this.extractData)
+            .catch(this.handleError);
     }
 
-    update(contact:Contact) {
-        var index = contacts.map(function (obj) {
-            return obj._id;
-        }).indexOf(contact._id);
-        if (index > -1) {
-            contacts[index] = contact;
-        }
+    private extractData(res:Response) {
+        let body = res.json();
+        return body || {};
     }
 
-    delete(id:string) {
-        var index = contacts.map(function (obj) {
-            return obj._id;
-        }).indexOf(id);
-        if (index > -1) {
-            contacts.splice(index, 1);
-        }
+    private handleError(error:any) {
+        // In a real world app, we might use a remote logging infrastructure
+        // We'd also dig deeper into the error to get a better message
+        let errMsg = (error.message) ? error.message :
+            error.status ? `${error.status} - ${error.statusText}` : 'Server error';
+        console.error(errMsg); // log to console instead
+        return Observable.throw(errMsg);
     }
 }

@@ -1,12 +1,12 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar color="primary">
         <ion-title><ion-icon name="contacts"></ion-icon> Contact List</ion-title>
     </ion-navbar>
 </ion-header>
 
 <ion-content>
     <ion-list>
-        <button ion-item *ngFor="let contact of contactList" (click)="goTo($event, contact)">
+        <button ion-item *ngFor="let contact of contactList" (click)="fnGoTo($event, contact)">
             <h2>{{contact.name}}</h2>
 
             <p>{{contact.email}}</p>
