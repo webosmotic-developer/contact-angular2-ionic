@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { Platform } from 'ionic-angular';
+
 import { ContactPage } from '../contact/contact';
 import { ContactDetailsPage } from '../contact.details/contact.details';
 
@@ -11,6 +13,17 @@ export class TabsPage {
     // should be each tab's root Page
     tab1Root:any = ContactPage;
     tab2Root:any = ContactDetailsPage;
+    tab3Root:any;
 
-    constructor() {}
+    isExitBtnShow:boolean = false;
+
+    constructor(private platform:Platform) {
+        if (this.platform.is('android')) {
+            this.isExitBtnShow = true;
+        }
+    }
+
+    fnExit(){
+        this.platform.exitApp();
+    }
 }
