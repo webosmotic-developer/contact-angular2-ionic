@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { NavController, LoadingController } from 'ionic-angular';
 
@@ -12,7 +12,7 @@ import { ContactService } from "../../shared/contact/contact.service";
     providers: [ContactService]
 })
 
-export class ContactPage implements OnInit {
+export class ContactPage {
 
     loader;
     isContactsLoaded = false;
@@ -32,7 +32,19 @@ export class ContactPage implements OnInit {
         this.loader.present();
     }
 
-    ngOnInit() {
+    //ionViewLoaded
+    //ionViewWillEnter
+    //ionViewDidEnter
+    //ionViewWillLeave
+    //ionViewDidLeave
+    //ionViewWillUnload
+    //ionViewDidUnload
+
+    ionViewWillEnter() {
+        this.fnGetUserContacts();
+    }
+
+    fnGetUserContacts(){
         this.fnLoading();
         this.isContactsLoaded = false;
         this.contactService.fnGetUserContacts()
@@ -44,6 +56,22 @@ export class ContactPage implements OnInit {
                 this.loader.dismissAll();
             },() => {
                 this.loader.dismissAll();
+            });
+    }
+
+    fnSearch(ev: any) {
+        this.contactService.fnGetUserContacts()
+            .subscribe(data => {
+                // set val to the value of the searchbar
+                let val = ev.target.value;
+
+                // if the value is an empty string don't filter the items
+                if (val && val.trim() != '') {
+                    data = data.filter((item) => {
+                        return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+                    });
+                }
+                this.contactList = data.reverse();
             });
     }
 
