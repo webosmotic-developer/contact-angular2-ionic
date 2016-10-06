@@ -45,6 +45,7 @@ export class ContactDetailsPage{
     fnOnSubmit() {
         this.submitAttempt = true;
         if(this.form.valid){
+            this.submitAttempt = false;
             this.contact.name = this.form.value.name;
             this.contact.email= this.form.value.email;
             this.contact.phone= this.form.value.phone;
