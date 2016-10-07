@@ -1,0 +1,37 @@
+<!-- MENU -->
+<ion-menu id="navmenu" [content]="content">
+
+    <ion-header>
+        <ion-toolbar color="primary">
+            <ion-title>Menu</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="outer-content">
+
+        <ion-list>
+            <ion-list-header>
+                Manage Contact
+            </ion-list-header>
+            <button ion-item menuClose *ngFor="let p of appPages" (click)="fnOpenPage(p)"
+                    [ngStyle]="{'color': p.active}">
+                <ion-icon item-left [name]="p.icon"></ion-icon>
+                {{p.title}}
+            </button>
+        </ion-list>
+
+        <ion-list *ngIf="isExitBtnShow">
+            <ion-list-header>
+                Exit Application
+            </ion-list-header>
+            <button ion-item menuClose (click)="fnExit()">
+                <ion-icon item-left name="power"></ion-icon>
+                Exit
+            </button>
+        </ion-list>
+    </ion-content>
+
+</ion-menu>
+
+<!-- main navigation -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

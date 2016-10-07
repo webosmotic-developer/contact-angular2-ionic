@@ -4,14 +4,12 @@ import './rxjs-extensions';
 import { MyApp } from './app.component';
 import { ContactPage } from '../pages/contact/contact';
 import { ContactDetailsPage } from '../pages/contact.details/contact.details';
-import { TabsPage } from '../pages/tabs/tabs';
 
 @NgModule({
     declarations: [
         MyApp,
         ContactPage,
-        ContactDetailsPage,
-        TabsPage
+        ContactDetailsPage
     ],
     imports: [
         IonicModule.forRoot(MyApp)
@@ -20,8 +18,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     entryComponents: [
         MyApp,
         ContactPage,
-        ContactDetailsPage,
-        TabsPage
+        ContactDetailsPage
     ],
     providers: []
 })

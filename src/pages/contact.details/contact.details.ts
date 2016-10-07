@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, Events } from 'ionic-angular';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ContactPage } from "../contact/contact";
@@ -21,7 +21,8 @@ export class ContactDetailsPage{
     submitAttempt: boolean = false;
 
     constructor(public nav:NavController, public params:NavParams, public loading: LoadingController,
-                public alert: AlertController, public fbld: FormBuilder, private contactService:ContactService) {
+                public alert: AlertController, public fbld: FormBuilder, private contactService:ContactService,
+                public events: Events) {
         this.contact = this.params.get('contact') ? this.params.get('contact') : new Contact();
 
         this.form = this.fbld.group({
@@ -40,6 +41,10 @@ export class ContactDetailsPage{
             (<FormControl>this.form.controls['phone'])
                 .setValue(this.contact.phone, { onlySelf: true });
         }
+    }
+
+    ionViewWillEnter() {
+        this.submitAttempt = false;
     }
 
     fnOnSubmit() {
@@ -69,7 +74,8 @@ export class ContactDetailsPage{
                 .subscribe(() => {
                     this.contact = new Contact();
                     this.loader.dismissAll();
-                    this.nav.push(ContactPage);
+                    this.events.publish('ActiveMenuItem', 'Contact List');
+                    this.nav.setRoot(ContactPage);
                 },() => {
                     this.loader.dismissAll();
                 });
@@ -78,7 +84,8 @@ export class ContactDetailsPage{
                 .subscribe(() => {
                     this.contact = new Contact();
                     this.loader.dismissAll();
-                    this.nav.push(ContactPage);
+                    this.events.publish('ActiveMenuItem', 'Contact List');
+                    this.nav.setRoot(ContactPage);
                 },() => {
                     this.loader.dismissAll();
                 });
@@ -99,8 +106,16 @@ export class ContactDetailsPage{
                     handler: () => {
                         this.fnLoading();
                         this.contactService.fnDeleteContact(id)
-                            .subscribe(data => {this.loader.dismissAll();this.nav.push(ContactPage);},
-                            error => {this.loader.dismissAll();this.nav.push(ContactPage);});
+                            .subscribe(data => {
+                                this.loader.dismissAll();
+                                this.events.publish('ActiveMenuItem', 'Contact List');
+                                this.nav.setRoot(ContactPage);
+                            },
+                            error => {
+                                this.loader.dismissAll();
+                                this.events.publish('ActiveMenuItem', 'Contact List');
+                                this.nav.setRoot(ContactPage);
+                            });
 
                     }
                 }
