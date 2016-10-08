@@ -1,0 +1,72 @@
+<ion-header>
+    <ion-navbar color="primary">
+        <ion-title><ion-icon name="contact"></ion-icon> Sign Up</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <ion-list>
+        <form #signUpForm="ngForm" novalidate>
+            <ion-item>
+                <ion-label floating>*Name</ion-label>
+                <ion-input [(ngModel)]="user.name" name="name" type="text" #name="ngModel" required>
+                </ion-input>
+            </ion-item>
+
+            <div *ngIf="(submitted || name.touched) && !name.valid" padding-left>
+                <p *ngIf="!name.valid" color="danger">
+                    Name is required.
+                </p>
+            </div>
+
+            <ion-item>
+                <ion-label floating>*Email</ion-label>
+                <ion-input [(ngModel)]="user.email" name="email" type="email" #email="ngModel"
+                           pattern='[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}' required>
+                </ion-input>
+            </ion-item>
+
+            <div *ngIf="(submitted || email.touched) && !email.valid" padding-left>
+                <p *ngIf="email.model === ''" color="danger">
+                    Email is required.
+                </p>
+                <p *ngIf="email.model !== '' && !email.valid" color="danger">
+                    Enter valid email address.
+                </p>
+            </div>
+
+            <ion-item>
+                <ion-label floating>*Password</ion-label>
+                <ion-input [(ngModel)]="user.password" name="password" type="password" #password="ngModel" required>
+                </ion-input>
+            </ion-item>
+
+            <div *ngIf="(submitted || password.touched) && !password.valid" padding-left>
+                <p *ngIf="!password.valid" color="danger">
+                    Password is required.
+                </p>
+            </div>
+
+            <ion-item>
+                <ion-label floating>*Confirm Password</ion-label>
+                <ion-input [(ngModel)]="cPassword" name="cPassword" type="password" #confirmPassword="ngModel" required>
+                </ion-input>
+            </ion-item>
+
+            <div *ngIf="(submitted || confirmPassword.touched) && !confirmPassword.valid" padding-left>
+                <p *ngIf="!confirmPassword.valid" color="danger">
+                    Confirm password is required.
+                </p>
+            </div>
+            <p *ngIf="confirmPassword.valid && (password.model != confirmPassword.model)" color="danger" padding-left>
+                Password doesn't match.
+            </p>
+
+            <ion-row responsive-sm>
+                <ion-col>
+                    <button ion-button (click)="fnSignUp(signUpForm)" type="submit" color="primary" block>Sign Up</button>
+                </ion-col>
+            </ion-row>
+        </form>
+    </ion-list>
+
+</ion-content>

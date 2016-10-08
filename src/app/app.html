@@ -18,6 +18,10 @@
                 <ion-icon item-left [name]="p.icon"></ion-icon>
                 {{p.title}}
             </button>
+            <button ion-item menuClose (click)="fnSignOut()">
+                <ion-icon item-left name="log-out"></ion-icon>
+                Sign out
+            </button>
         </ion-list>
 
         <ion-list *ngIf="isExitBtnShow">
