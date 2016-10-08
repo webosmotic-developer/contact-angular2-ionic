@@ -1,14 +1,16 @@
 <ion-header>
     <ion-navbar color="primary">
-        <ion-title><ion-icon name="contact"></ion-icon> Sign Up</ion-title>
+        <ion-title>
+            <ion-icon name="contact"></ion-icon>
+            Sign Up
+        </ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content padding>
     <ion-list>
         <form #signUpForm="ngForm" novalidate>
             <ion-item>
-                <ion-label floating>*Name</ion-label>
-                <ion-input [(ngModel)]="user.name" name="name" type="text" #name="ngModel" required>
+                <ion-input placeholder="*Name" [(ngModel)]="user.name" name="name" type="text" #name="ngModel" required>
                 </ion-input>
             </ion-item>
 
@@ -19,8 +21,7 @@
             </div>
 
             <ion-item>
-                <ion-label floating>*Email</ion-label>
-                <ion-input [(ngModel)]="user.email" name="email" type="email" #email="ngModel"
+                <ion-input placeholder="*Email" [(ngModel)]="user.email" name="email" type="email" #email="ngModel"
                            pattern='[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,4}' required>
                 </ion-input>
             </ion-item>
@@ -29,14 +30,15 @@
                 <p *ngIf="email.model === ''" color="danger">
                     Email is required.
                 </p>
+
                 <p *ngIf="email.model !== '' && !email.valid" color="danger">
                     Enter valid email address.
                 </p>
             </div>
 
             <ion-item>
-                <ion-label floating>*Password</ion-label>
-                <ion-input [(ngModel)]="user.password" name="password" type="password" #password="ngModel" required>
+                <ion-input placeholder="*Password" [(ngModel)]="user.password" name="password" type="password"
+                           #password="ngModel" required>
                 </ion-input>
             </ion-item>
 
@@ -47,8 +49,8 @@
             </div>
 
             <ion-item>
-                <ion-label floating>*Confirm Password</ion-label>
-                <ion-input [(ngModel)]="cPassword" name="cPassword" type="password" #confirmPassword="ngModel" required>
+                <ion-input placeholder="*Confirm Password" [(ngModel)]="cPassword" name="cPassword" type="password"
+                           #confirmPassword="ngModel" required>
                 </ion-input>
             </ion-item>
 
@@ -63,7 +65,8 @@
 
             <ion-row responsive-sm>
                 <ion-col>
-                    <button ion-button (click)="fnSignUp(signUpForm)" type="submit" color="primary" block>Sign Up</button>
+                    <button ion-button (click)="fnSignUp(signUpForm)" type="submit" color="primary" block>Sign Up
+                    </button>
                 </ion-col>
             </ion-row>
         </form>

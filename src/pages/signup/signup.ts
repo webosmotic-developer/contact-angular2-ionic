@@ -24,6 +24,10 @@ export class SignUpPage {
         this.user.password = "";
     }
 
+    ionViewWillEnter() {
+        this.submitted = false;
+    }
+
     fnSignUp(form) {
         this.submitted = true;
 

@@ -22,6 +22,10 @@ export class SignInPage {
         this.user.password = "";
     }
 
+    ionViewWillEnter() {
+        this.submitted = false;
+    }
+
     fnSignIn(form) {
         this.submitted = true;
 
