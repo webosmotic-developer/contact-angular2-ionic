@@ -1,9 +1,14 @@
 <ion-header>
     <ion-navbar color="primary">
         <ion-title>
-            <ion-icon name="log-in"></ion-icon>
+            <ion-icon [name]="page === 'Sign In'  ? 'log-in' : 'log-out'"></ion-icon>
             {{page}}
         </ion-title>
+        <ion-buttons *ngIf="isExitBtnShow" end>
+            <button ion-button icon-only (click)="fnExit()">
+                <ion-icon name="power"></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-navbar>
 </ion-header>
 <ion-content>
@@ -59,7 +64,8 @@
         <div *ngSwitchCase="'Sign Up'" padding>
             <form #signUpForm="ngForm" novalidate>
                 <ion-item>
-                    <ion-input placeholder="*Name" [(ngModel)]="user.name" name="name" type="text" #name="ngModel" required>
+                    <ion-input placeholder="*Name" [(ngModel)]="user.name" name="name" type="text" #name="ngModel"
+                               required>
                     </ion-input>
                 </ion-item>
 
@@ -108,7 +114,8 @@
                         Confirm password is required.
                     </p>
                 </div>
-                <p *ngIf="confirmPassword.valid && (password.model != confirmPassword.model)" color="danger" padding-left>
+                <p *ngIf="confirmPassword.valid && (password.model != confirmPassword.model)" color="danger"
+                   padding-left>
                     Password doesn't match.
                 </p>
 
