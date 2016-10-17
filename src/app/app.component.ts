@@ -5,7 +5,7 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { ContactPage } from '../pages/contact/contact';
 import { ContactDetailsPage } from '../pages/contact.details/contact.details';
-import { TabsPage } from '../pages/tabs/tabs';
+import { MainPage } from '../pages/main/main';
 
 import { Config } from "../shared/config";
 import { UserService } from "../shared/user/user.service";
@@ -36,7 +36,7 @@ export class MyApp {
         {title: 'Add Contact', component: ContactDetailsPage, index: 1, icon: 'person-add', active: ''}
     ];
 
-    rootPage = TabsPage;
+    rootPage = MainPage;
 
     constructor(private menu:MenuController, private platform:Platform, private events:Events,
                 private userService:UserService) {
@@ -71,10 +71,11 @@ export class MyApp {
                         if(views.indexOf(viewName) === -1){
                             Config.user._id = config.user._id;
                             Config.user.name = config.user.name;
+                            Config.token = config.token;
                             this.nav.setRoot(ContactPage);
                         }
                     } else {
-                        this.nav.setRoot(TabsPage);
+                        this.nav.setRoot(MainPage);
                     }
                 });
             }
@@ -83,7 +84,7 @@ export class MyApp {
 
     fnSignOut(){
         this.userService.setConfig(null);
-        this.nav.setRoot(TabsPage);
+        this.nav.setRoot(MainPage);
     }
 
     fnOpenPage(page:PageObj) {

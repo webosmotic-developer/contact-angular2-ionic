@@ -8,18 +8,14 @@ import { UserService } from '../shared/user/user.service';
 
 import { ContactPage } from '../pages/contact/contact';
 import { ContactDetailsPage } from '../pages/contact.details/contact.details';
-import { TabsPage } from '../pages/tabs/tabs';
-import { SignInPage } from '../pages/signin/signin';
-import { SignUpPage } from '../pages/signup/signup';
+import { MainPage } from '../pages/main/main';
 
 @NgModule({
     declarations: [
         MyApp,
         ContactPage,
         ContactDetailsPage,
-        TabsPage,
-        SignInPage,
-        SignUpPage
+        MainPage
     ],
     imports: [
         IonicModule.forRoot(MyApp)
@@ -29,9 +25,7 @@ import { SignUpPage } from '../pages/signup/signup';
         MyApp,
         ContactPage,
         ContactDetailsPage,
-        TabsPage,
-        SignInPage,
-        SignUpPage
+        MainPage
     ],
     providers: [UserService, Storage]
 })
